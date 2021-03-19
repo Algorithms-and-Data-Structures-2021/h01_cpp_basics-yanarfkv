@@ -17,7 +17,7 @@ ResizeStorageStatus resize_storage(Book *&storage, int size, int new_capacity) {
   if (new_capacity <= size) {
       return ResizeStorageStatus::INSUFFICIENT_CAPACITY;
   }
-  Book *new_storage = new Book[new_capacity];
+  auto new_storage = new Book[new_capacity];
   std::copy(storage, storage + size, new_storage);
   delete[] storage;
   storage = new_storage;

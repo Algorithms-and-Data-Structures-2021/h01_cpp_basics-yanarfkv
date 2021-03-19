@@ -33,8 +33,8 @@ Book::Book(const std::string &title,
 
 // 2. реализуйте метод ...
 bool Book::AddAuthor(const Author &author) {
-    for (Author &a : authors_) {
-        if (author == a) return false;
+    for (Author authors : authors_) {
+        if (author == authors) return false;
     }
     authors_.push_back(author);
     return true;
