@@ -33,7 +33,6 @@ BookStore::BookStore(const std::string &name) : name_{name} {
   name_ = name;
   storage_ = new Book[kInitStorageCapacity];
   storage_capacity_ = kInitStorageCapacity;
-  storage_size_ = 0;
   // здесь мог бы быть ваш сотрясающий землю и выделяющий память код ...
 }
 
@@ -41,9 +40,9 @@ BookStore::BookStore(const std::string &name) : name_{name} {
 BookStore::~BookStore() {
   // здесь мог бы быть ваш высвобождающий разум от негатива код ...
   // Tip 1: я свободен ..., словно память в куче: не забудьте обнулить указатель
+  delete[] storage_;
   storage_capacity_ = 0;
   storage_size_ = 0;
-  delete[] storage_;
   storage_ = nullptr;
 }
 
@@ -53,17 +52,13 @@ void BookStore::AddBook(const Book &book) {
     // здесь мог бы быть ваш умопомрачительный код ...
     // Tip 1: используйте функцию resize_storage_internal, задав новый размер хранилища
     // Tip 2: не забудьте обработать статус вызова функции
-      ResizeStorageStatus status = resize_storage_internal(storage_capacity_ + kCapacityCoefficient);
-      if (status == ResizeStorageStatus::SUCCESS) {
-          storage_[storage_size_] = book;
-          storage_size_ ++;
-      }
-  }
-  else {
-      storage_[storage_size_] = book;
-      storage_size_++;
+    if (resize_storage_internal(storage_capacity_ + kCapacityCoefficient) != ResizeStorageStatus::SUCCESS){
+        return;
+    }
   }
   // Tip 3: не забудьте добавить книгу в наше бездонное хранилище ...
+  storage_[storage_size_] = book;
+  storage_size_++;
 }
 
 // РЕАЛИЗОВАНО
